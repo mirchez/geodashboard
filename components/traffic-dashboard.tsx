@@ -323,7 +323,7 @@ export default function TrafficDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)]">
-              <TrafficMap filters={filters} area={area} timeRange={timeRange} />
+              <TrafficMap filters={filters} />
             </CardContent>
           </Card>
         </motion.div>
