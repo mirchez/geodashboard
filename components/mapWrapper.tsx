@@ -39,7 +39,7 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
 
       const elements = response.data.elements;
 
-      return elements.map((el: any) => ({
+      return elements.map((el: { lon: number; lat: number }) => ({
         coordinates: [el.lon, el.lat],
       }));
     } catch (error) {
@@ -77,13 +77,15 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
 
       const geojsonData: FeatureCollection<Point> = {
         type: "FeatureCollection",
-        features: features.map((feature: any) => ({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: feature.coordinates,
-          },
-        })),
+        features: features.map(
+          (feature: { coordinates: [number, number] }) => ({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: feature.coordinates,
+            },
+          })
+        ),
       };
 
       if (source) {

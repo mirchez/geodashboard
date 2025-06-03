@@ -10,15 +10,9 @@ interface Filters {
 
 interface TrafficMapProps {
   filters: Filters;
-  area: string;
-  timeRange: string;
 }
 
-export default function TrafficMap({
-  filters,
-  area,
-  timeRange,
-}: TrafficMapProps) {
+export default function TrafficMap({ filters }: TrafficMapProps) {
   return (
     <div className="w-full h-full relative bg-muted/20">
       <MapWrapper filters={filters} />
