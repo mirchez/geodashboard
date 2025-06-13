@@ -3,13 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, Settings, BarChart3, MapPin, Menu } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,8 +51,6 @@ const sidebarVariants = {
 };
 
 export default function TrafficDashboard() {
-  const [area, setArea] = useState("all");
-  const [timeRange, setTimeRange] = useState("15min");
   const [filters, setFilters] = useState({
     accidents: true,
     roadClosures: true,
@@ -79,54 +70,6 @@ export default function TrafficDashboard() {
 
   const FilterContent = () => (
     <div className="mx-auto space-y-4 sm:space-y-10 p-4 sm:p-6">
-      {/* <motion.div variants={itemVariants}>
-        <Label
-          htmlFor="area"
-          className="text-sm font-medium mb-2 sm:mb-3 block"
-        >
-          Area Selection
-        </Label>
-        <Select value={area} onValueChange={setArea}>
-          <SelectTrigger className="w-full h-10 sm:h-11">
-            <SelectValue placeholder="Select area" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Areas</SelectItem>
-            <SelectItem value="downtown">Downtown</SelectItem>
-            <SelectItem value="north">North District</SelectItem>
-            <SelectItem value="south">South District</SelectItem>
-            <SelectItem value="east">East District</SelectItem>
-            <SelectItem value="west">West District</SelectItem>
-          </SelectContent>
-        </Select>
-      </motion.div>
-
-      <Separator />
-
-      <motion.div variants={itemVariants}>
-        <Label
-          htmlFor="timeRange"
-          className="text-sm font-medium mb-2 sm:mb-3 block"
-        >
-          Time Range
-        </Label>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-full h-10 sm:h-11">
-            <SelectValue placeholder="Select time range" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="5min">Last 5 minutes</SelectItem>
-            <SelectItem value="15min">Last 15 minutes</SelectItem>
-            <SelectItem value="30min">Last 30 minutes</SelectItem>
-            <SelectItem value="1hour">Last hour</SelectItem>
-            <SelectItem value="3hours">Last 3 hours</SelectItem>
-            <SelectItem value="24hours">Last 24 hours</SelectItem>
-          </SelectContent>
-        </Select>
-      </motion.div>
-
-      <Separator /> */}
-
       <motion.div variants={itemVariants}>
         <Label className="text-sm font-medium mb-3 sm:mb-4 block">
           Data Types
