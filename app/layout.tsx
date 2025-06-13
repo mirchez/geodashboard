@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Traffic Situation Dashboard",
-  description: "Dynamic Live GeoDashboard for traffic monitoring",
+  description: "Dynamic Live TrafficFlow for traffic monitoring",
 };
 
 export default function RootLayout({

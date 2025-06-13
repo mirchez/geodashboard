@@ -78,8 +78,8 @@ export default function TrafficDashboard() {
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
 
   const FilterContent = () => (
-    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
-      <motion.div variants={itemVariants}>
+    <div className="mx-auto space-y-4 sm:space-y-10 p-4 sm:p-6">
+      {/* <motion.div variants={itemVariants}>
         <Label
           htmlFor="area"
           className="text-sm font-medium mb-2 sm:mb-3 block"
@@ -125,7 +125,7 @@ export default function TrafficDashboard() {
         </Select>
       </motion.div>
 
-      <Separator />
+      <Separator /> */}
 
       <motion.div variants={itemVariants}>
         <Label className="text-sm font-medium mb-3 sm:mb-4 block">
@@ -224,9 +224,6 @@ export default function TrafficDashboard() {
                       <Settings className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       <span className="text-base sm:text-lg">Filters</span>
                     </div>
-                    <Badge variant="outline" className="text-xs">
-                      {activeFiltersCount} active
-                    </Badge>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="overflow-y-auto max-h-[calc(100vh-8rem)]">
@@ -246,17 +243,11 @@ export default function TrafficDashboard() {
                   Traffic Situation
                 </h1>
                 <p className="text-xs lg:text-sm text-muted-foreground mt-1 hidden sm:block truncate">
-                  Dynamic Live GeoDashboard
+                  Dynamic Live TrafficFlow
                 </p>
               </div>
             </Link>
           </div>
-
-          <Badge variant="secondary" className="ml-2 lg:ml-4 shrink-0 text-xs">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full mr-1 sm:mr-2 animate-pulse" />
-            <span className="hidden xs:inline">Live</span>
-            <span className="xs:hidden">•</span>
-          </Badge>
         </div>
 
         <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4 shrink-0">

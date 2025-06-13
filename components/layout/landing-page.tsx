@@ -393,7 +393,7 @@ export default function LandingPage() {
                           Traffic Situation
                         </h3>
                         <p className="text-muted-foreground">
-                          Dynamic Live GeoDashboard
+                          Dynamic Live Traffic Flow
                         </p>
                       </div>
                     </div>
