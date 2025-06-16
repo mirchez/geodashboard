@@ -1,11 +1,17 @@
 // src/lib/getOverpassQuery.ts
 
+import { City } from "./cities";
+
 export const getOverpassQuery = (filters: {
   accidents: boolean;
   roadClosures: boolean;
   vehicles: boolean;
+  selectedCity: City;
 }) => {
   const queries = [];
+  const lat = filters.selectedCity.coordinates.lat;
+  const lng = filters.selectedCity.coordinates.lng;
+  const radius = filters.selectedCity.radius || 5000; // Default radius of 5km
 
   if (filters.accidents) {
     // 🚥 Simulating "accidents":
@@ -13,8 +19,8 @@ export const getOverpassQuery = (filters: {
     // - highway=speed_camera → SPEED CAMERAS → along main roads
     // ❗️ These are not real-time accidents, but work great as visual proxies for your demo.
     queries.push(`
-        node["highway"="traffic_signals"](around:5000,-34.6037,-58.3816);
-        node["highway"="speed_camera"](around:5000,-34.6037,-58.3816);
+        node["highway"="traffic_signals"](around:${radius},${lat},${lng});
+        node["highway"="speed_camera"](around:${radius},${lat},${lng});
       `);
   }
 
@@ -23,7 +29,7 @@ export const getOverpassQuery = (filters: {
     // - amenity=parking → PARKING LOTS
     // ✅ Fairly common → in urban centers → works as a proxy for areas with high vehicle density.
     queries.push(`
-        node["amenity"="parking"](around:5000,-34.6037,-58.3816);
+        node["amenity"="parking"](around:${radius},${lat},${lng});
       `);
   }
 
@@ -35,7 +41,7 @@ export const getOverpassQuery = (filters: {
     //   - barrier=lift_gate (automatic gates)
     // ✅ Good to represent physical street closures or restrictions.
     queries.push(`
-        node["barrier"](around:5000,-34.6037,-58.3816);
+        node["barrier"](around:${radius},${lat},${lng});
       `);
   }
 

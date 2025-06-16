@@ -16,10 +16,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import TrafficMap from "@/components/traffic-map";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
+import { cities, City } from "@/lib/cities";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -55,6 +63,7 @@ export default function TrafficDashboard() {
     accidents: true,
     roadClosures: true,
     vehicles: true,
+    selectedCity: cities[0],
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMobile();
@@ -66,10 +75,40 @@ export default function TrafficDashboard() {
     }));
   };
 
+  const handleCityChange = (cityId: string) => {
+    const city = cities.find((c) => c.id === cityId);
+    if (city) {
+      setFilters((prev) => ({ ...prev, selectedCity: city }));
+    }
+  };
+
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
 
   const FilterContent = () => (
     <div className="mx-auto space-y-4 sm:space-y-10 p-4 sm:p-6">
+      <motion.div variants={itemVariants}>
+        <Label className="text-sm font-medium mb-3 sm:mb-4 block">
+          Select City
+        </Label>
+        <Select
+          value={filters.selectedCity.id}
+          onValueChange={handleCityChange}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a city" />
+          </SelectTrigger>
+          <SelectContent>
+            {cities.map((city) => (
+              <SelectItem key={city.id} value={city.id}>
+                {city.name}, {city.country}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </motion.div>
+
+      <Separator />
+
       <motion.div variants={itemVariants}>
         <Label className="text-sm font-medium mb-3 sm:mb-4 block">
           Data Types

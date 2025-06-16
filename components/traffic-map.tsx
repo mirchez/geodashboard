@@ -1,11 +1,13 @@
 "use client";
 
 import MapWrapper from "./mapWrapper";
+import { City } from "@/lib/cities";
 
 interface Filters {
   accidents: boolean;
   roadClosures: boolean;
   vehicles: boolean;
+  selectedCity: City;
 }
 
 interface TrafficMapProps {

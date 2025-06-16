@@ -6,24 +6,27 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import axios from "axios";
 import { getOverpassQuery } from "@/lib/getOverpassQuery";
 import { FeatureCollection, Point } from "geojson";
+import { City, cities } from "@/lib/cities";
 
 interface Filters {
   accidents: boolean;
   roadClosures: boolean;
   vehicles: boolean;
+  selectedCity: City;
 }
 
 interface MapWrapperProps {
-  filters: {
-    accidents: boolean;
-    roadClosures: boolean;
-    vehicles: boolean;
-  };
+  filters: Filters;
 }
+
+// Default city (Buenos Aires)
+const defaultCity =
+  cities.find((city) => city.id === "buenos-aires") || cities[0];
 
 export default function MapWrapper({ filters }: MapWrapperProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const selectedCity = filters.selectedCity || defaultCity;
 
   const fetchOverpassData = async (filters: Filters) => {
     try {
@@ -56,20 +59,58 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
       container: mapContainerRef.current!,
       style:
         "https://api.maptiler.com/maps/darkmatter/style.json?key=sGxwSmiwQnfEYdHrtByj",
-      center: [-58.3816, -34.6037],
+      center: [selectedCity.coordinates.lng, selectedCity.coordinates.lat],
       zoom: 12,
     });
 
     mapRef.current = map;
+
+    // Add navigation controls
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    // Add scale control
+    map.addControl(new maplibregl.ScaleControl(), "bottom-right");
+
+    // Add city markers
+    cities.forEach((city) => {
+      const el = document.createElement("div");
+      el.className = "city-marker";
+      el.style.width = "10px";
+      el.style.height = "10px";
+      el.style.borderRadius = "50%";
+      el.style.backgroundColor = "#ff4444";
+      el.style.border = "2px solid white";
+      el.style.cursor = "pointer";
+
+      new maplibregl.Marker(el)
+        .setLngLat([city.coordinates.lng, city.coordinates.lat])
+        .setPopup(
+          new maplibregl.Popup({ offset: 25 }).setHTML(
+            `<h3>${city.name}</h3><p>${city.country}</p>`
+          )
+        )
+        .addTo(map);
+    });
   }, []);
 
+  // Update map center when selected city changes
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !selectedCity) return;
+
+    mapRef.current.flyTo({
+      center: [selectedCity.coordinates.lng, selectedCity.coordinates.lat],
+      zoom: 12,
+      essential: true,
+    });
+  }, [selectedCity]);
+
+  useEffect(() => {
+    if (!mapRef.current || !selectedCity) return;
 
     const map = mapRef.current;
 
     const updateMapData = async () => {
-      const features = await fetchOverpassData(filters);
+      const features = await fetchOverpassData({ ...filters, selectedCity });
 
       const source = map.getSource("accidents") as
         | maplibregl.GeoJSONSource
@@ -83,6 +124,9 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
             geometry: {
               type: "Point",
               coordinates: feature.coordinates,
+            },
+            properties: {
+              city: selectedCity.name,
             },
           })
         ),
@@ -127,7 +171,7 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
     };
 
     updateMapData();
-  }, [filters]);
+  }, [filters, selectedCity]);
 
   return (
     <div className="relative h-full w-full min-h-[500px]">
