@@ -240,14 +240,6 @@ export default function TrafficDashboard() {
             <BarChart3 className="h-4 w-4 mr-2" />
             <span className="hidden lg:inline">Analytics</span>
           </Button>
-          <Button variant="ghost" size="sm" className="hidden sm:flex">
-            <Settings className="h-4 w-4 mr-2" />
-            <span className="hidden lg:inline">Settings</span>
-          </Button>
-          <Button variant="outline" size="sm" className="hidden sm:flex">
-            <span className="mr-2 hidden lg:inline">MORE</span>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
         </div>
       </motion.div>
 
@@ -352,14 +344,6 @@ export default function TrafficDashboard() {
             >
               <BarChart3 className="h-4 w-4 mb-1" />
               <span className="text-xs">Analytics</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex-col h-auto py-2 px-3"
-            >
-              <Settings className="h-4 w-4 mb-1" />
-              <span className="text-xs">Settings</span>
             </Button>
           </div>
         </motion.div>
