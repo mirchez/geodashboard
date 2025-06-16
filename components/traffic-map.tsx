@@ -12,12 +12,13 @@ interface Filters {
 
 interface TrafficMapProps {
   filters: Filters;
+  mapStyle: string;
 }
 
-export default function TrafficMap({ filters }: TrafficMapProps) {
+export default function TrafficMap({ filters, mapStyle }: TrafficMapProps) {
   return (
     <div className="w-full h-full relative bg-muted/20">
-      <MapWrapper filters={filters} />
+      <MapWrapper filters={filters} mapStyle={mapStyle} />
     </div>
   );
 }
