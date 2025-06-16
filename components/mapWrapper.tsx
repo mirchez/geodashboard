@@ -106,7 +106,7 @@ export default function MapWrapper({ filters, mapStyle }: MapWrapperProps) {
         )
         .addTo(map);
     });
-  }, []);
+  }, [mapStyle, selectedCity.coordinates.lat, selectedCity.coordinates.lng]);
 
   // New useEffect to update map style when mapStyle prop changes
   useEffect(() => {

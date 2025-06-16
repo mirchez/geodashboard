@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, Settings, BarChart3, MapPin, Menu } from "lucide-react";
+import { MapPin, Menu } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -17,7 +16,6 @@ import {
   SheetTrigger,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
 import MapWrapper from "@/components/mapWrapper";
@@ -193,8 +191,9 @@ export default function TrafficDashboard() {
                 <SheetHeader className="p-4 sm:p-6 pb-2 sm:pb-4 border-b border-border/50">
                   <SheetTitle className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Settings className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                      <span className="text-base sm:text-lg">Filters</span>
+                      <span className="text-base sm:text-lg" aria-hidden="true">
+                        Filters
+                      </span>
                     </div>
                   </SheetTitle>
                   <SheetDescription>
@@ -288,13 +287,9 @@ export default function TrafficDashboard() {
           </div>
         </div>
 
-        {/* <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4 shrink-0">
-          <ThemeToggle />
-          <Button variant="ghost" size="sm" className="hidden md:flex">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            <span className="hidden lg:inline">Analytics</span>
-          </Button>
-        </div> */}
+        <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4 shrink-0">
+          {/* <ThemeToggle /> */}
+        </div>
       </motion.div>
 
       <div className="flex-1 p-3 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-6 flex flex-col lg:flex-row">
@@ -304,8 +299,7 @@ export default function TrafficDashboard() {
             <Card className="h-full shadow-lg border-border/50">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <Settings className="h-5 w-5 mr-2" />
+                  <span className="flex items-center" aria-hidden="true">
                     Filters
                   </span>
                   <Badge variant="outline">{activeFiltersCount} active</Badge>
@@ -428,7 +422,6 @@ export default function TrafficDashboard() {
               size="sm"
               className="flex-col h-auto py-2 px-3"
             >
-              <BarChart3 className="h-4 w-4 mb-1" />
               <span className="text-xs">Analytics</span>
             </Button>
           </div>
