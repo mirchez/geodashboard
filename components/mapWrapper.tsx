@@ -7,7 +7,6 @@ import axios from "axios";
 import { getOverpassQuery } from "@/lib/getOverpassQuery";
 import { FeatureCollection, Point } from "geojson";
 import { City, cities } from "@/lib/cities";
-import { Button } from "@/components/ui/button";
 
 interface Filters {
   accidents: boolean;
@@ -106,7 +105,11 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
       zoom: 12,
       essential: true,
     });
-  }, [selectedCity]);
+  }, [
+    selectedCity.coordinates.lat,
+    selectedCity.coordinates.lng,
+    selectedCity,
+  ]);
 
   useEffect(() => {
     if (!mapRef.current || !selectedCity) return;
