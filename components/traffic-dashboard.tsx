@@ -15,6 +15,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetDescription,
 } from "@/components/ui/sheet";
 import {
   Select,
@@ -207,6 +208,10 @@ export default function TrafficDashboard() {
                       <span className="text-base sm:text-lg">Filters</span>
                     </div>
                   </SheetTitle>
+                  <SheetDescription>
+                    Adjust the data filters and select a city to display on the
+                    map.
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="overflow-y-auto max-h-[calc(100vh-8rem)]">
                   <FilterContent />
