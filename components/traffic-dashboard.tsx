@@ -20,6 +20,15 @@ import {
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
+import MapWrapper from "@/components/mapWrapper";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cities, City } from "@/lib/cities";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -58,6 +67,7 @@ export default function TrafficDashboard() {
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMobile();
+  const [selectedCity, setSelectedCity] = useState<City>(cities[0]);
 
   const handleFilterChange = (filter: keyof typeof filters) => {
     setFilters((prev) => ({
@@ -175,6 +185,33 @@ export default function TrafficDashboard() {
                 </SheetHeader>
                 <div className="overflow-y-auto max-h-[calc(100vh-8rem)]">
                   <FilterContent />
+                  <div className="p-4 sm:p-6 pt-0 sm:pt-0">
+                    <motion.div variants={itemVariants}>
+                      <Label className="text-sm font-medium mb-3 sm:mb-4 block">
+                        Select City
+                      </Label>
+                      <Select
+                        onValueChange={(value) =>
+                          setSelectedCity(
+                            cities.find((city) => city.id === value) ||
+                              cities[0]
+                          )
+                        }
+                        defaultValue={selectedCity.id}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a city" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {cities.map((city) => (
+                            <SelectItem key={city.id} value={city.id}>
+                              {city.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
@@ -230,6 +267,30 @@ export default function TrafficDashboard() {
               </CardHeader>
               <CardContent className="p-0">
                 <FilterContent />
+                <div className="p-4 sm:p-6 pt-0 sm:pt-0">
+                  <Label className="text-sm font-medium mb-3 sm:mb-4 block">
+                    Select City
+                  </Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setSelectedCity(
+                        cities.find((city) => city.id === value) || cities[0]
+                      )
+                    }
+                    defaultValue={selectedCity.id}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cities.map((city) => (
+                        <SelectItem key={city.id} value={city.id}>
+                          {city.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -261,9 +322,7 @@ export default function TrafficDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)]">
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                Map functionality removed.
-              </div>
+              <MapWrapper filters={{ ...filters, selectedCity }} />
             </CardContent>
           </Card>
         </motion.div>
