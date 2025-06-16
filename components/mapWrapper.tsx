@@ -17,13 +17,14 @@ interface Filters {
 
 interface MapWrapperProps {
   filters: Filters;
+  mapStyle: string;
 }
 
 // Default city (Buenos Aires)
 const defaultCity =
   cities.find((city) => city.id === "buenos-aires") || cities[0];
 
-export default function MapWrapper({ filters }: MapWrapperProps) {
+export default function MapWrapper({ filters, mapStyle }: MapWrapperProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const selectedCity = filters.selectedCity || defaultCity;
@@ -57,8 +58,7 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
 
     const map = new maplibregl.Map({
       container: mapContainerRef.current!,
-      style:
-        "https://api.maptiler.com/maps/darkmatter/style.json?key=sGxwSmiwQnfEYdHrtByj",
+      style: mapStyle,
       center: [selectedCity.coordinates.lng, selectedCity.coordinates.lat],
       zoom: 12,
     });
@@ -70,6 +70,18 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
 
     // Add scale control
     map.addControl(new maplibregl.ScaleControl(), "bottom-right");
+
+    // Handle missing images (e.g., pedestrian-polygon) by providing a transparent pixel
+    map.on("styleimagemissing", (e) => {
+      if (map.hasImage(e.id)) return; // Check if the image has already been added
+
+      const transparentPixel = new Uint8Array([0, 0, 0, 0]);
+      map.addImage(e.id, {
+        width: 1,
+        height: 1,
+        data: transparentPixel,
+      });
+    });
 
     // Add city markers
     cities.forEach((city) => {
@@ -95,6 +107,13 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
         .addTo(map);
     });
   }, []);
+
+  // New useEffect to update map style when mapStyle prop changes
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    mapRef.current.setStyle(mapStyle);
+  }, [mapStyle]);
 
   // Update map center when selected city changes
   useEffect(() => {

@@ -30,6 +30,33 @@ import {
 } from "@/components/ui/select";
 import { cities, City } from "@/lib/cities";
 
+const MAP_STYLES = [
+  {
+    value: `https://tiles.stadiamaps.com/styles/alidade_smooth.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "Alidade Smooth",
+  },
+  {
+    value: `https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "Alidade Smooth Dark",
+  },
+  {
+    value: `https://tiles.stadiamaps.com/styles/osm_bright.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "OSM Bright",
+  },
+  {
+    value: `https://tiles.stadiamaps.com/styles/alidade_satellite.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "Alidade Satellite",
+  },
+  {
+    value: `https://tiles.stadiamaps.com/styles/stamen_toner.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "Stamen Toner",
+  },
+  {
+    value: `https://tiles.stadiamaps.com/styles/stamen_terrain.json?api_key=${process.env.NEXT_PUBLIC_STADIA_API_KEY}`,
+    label: "Stamen Terrain",
+  },
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -68,6 +95,7 @@ export default function TrafficDashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useMobile();
   const [selectedCity, setSelectedCity] = useState<City>(cities[0]);
+  const [mapStyle, setMapStyle] = useState(MAP_STYLES[0].value);
 
   const handleFilterChange = (filter: keyof typeof filters) => {
     setFilters((prev) => ({
@@ -137,15 +165,6 @@ export default function TrafficDashboard() {
           </div>
         </div>
       </motion.div>
-
-      <Separator />
-
-      <motion.div className="pt-2 sm:pt-4" variants={itemVariants}>
-        <Button className="w-full h-10 sm:h-11" variant="default">
-          <BarChart3 className="h-4 w-4 mr-2" />
-          <span className="text-sm sm:text-base">Generate Report</span>
-        </Button>
-      </motion.div>
     </div>
   );
 
@@ -200,12 +219,47 @@ export default function TrafficDashboard() {
                         defaultValue={selectedCity.id}
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a city" />
+                          <SelectValue
+                            placeholder="Select a city"
+                            className="text-foreground"
+                          >
+                            {cities.find((city) => city.id === selectedCity.id)
+                              ?.name || "Select a city"}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           {cities.map((city) => (
                             <SelectItem key={city.id} value={city.id}>
                               {city.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
+                  <div className="p-4 sm:p-6 pt-0 sm:pt-0">
+                    <motion.div variants={itemVariants}>
+                      <Label className="text-sm font-medium mb-3 sm:mb-4 block">
+                        Map Style
+                      </Label>
+                      <Select
+                        onValueChange={setMapStyle}
+                        defaultValue={mapStyle}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder="Select a map style"
+                            className="text-foreground"
+                          >
+                            {MAP_STYLES.find(
+                              (style) => style.value === mapStyle
+                            )?.label || "Select a map style"}
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MAP_STYLES.map((style) => (
+                            <SelectItem key={style.value} value={style.value}>
+                              {style.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -234,13 +288,13 @@ export default function TrafficDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4 shrink-0">
+        {/* <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4 shrink-0">
           <ThemeToggle />
           <Button variant="ghost" size="sm" className="hidden md:flex">
             <BarChart3 className="h-4 w-4 mr-2" />
             <span className="hidden lg:inline">Analytics</span>
           </Button>
-        </div>
+        </div> */}
       </motion.div>
 
       <div className="flex-1 p-3 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-6 flex flex-col lg:flex-row">
@@ -272,12 +326,41 @@ export default function TrafficDashboard() {
                     defaultValue={selectedCity.id}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a city" />
+                      <SelectValue
+                        placeholder="Select a city"
+                        className="text-foreground"
+                      >
+                        {cities.find((city) => city.id === selectedCity.id)
+                          ?.name || "Select a city"}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {cities.map((city) => (
                         <SelectItem key={city.id} value={city.id}>
                           {city.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="p-4 sm:p-6 pt-0 sm:pt-0">
+                  <Label className="text-sm font-medium mb-3 sm:mb-4 block">
+                    Map Style
+                  </Label>
+                  <Select onValueChange={setMapStyle} defaultValue={mapStyle}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue
+                        placeholder="Select a map style"
+                        className="text-foreground"
+                      >
+                        {MAP_STYLES.find((style) => style.value === mapStyle)
+                          ?.label || "Select a map style"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {MAP_STYLES.map((style) => (
+                        <SelectItem key={style.value} value={style.value}>
+                          {style.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -314,7 +397,10 @@ export default function TrafficDashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-0 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)]">
-              <MapWrapper filters={{ ...filters, selectedCity }} />
+              <MapWrapper
+                filters={{ ...filters, selectedCity }}
+                mapStyle={mapStyle}
+              />
             </CardContent>
           </Card>
         </motion.div>
