@@ -7,6 +7,7 @@ import axios from "axios";
 import { getOverpassQuery } from "@/lib/getOverpassQuery";
 import { FeatureCollection, Point } from "geojson";
 import { City, cities } from "@/lib/cities";
+import { Button } from "@/components/ui/button";
 
 interface Filters {
   accidents: boolean;
@@ -86,7 +87,10 @@ export default function MapWrapper({ filters }: MapWrapperProps) {
         .setLngLat([city.coordinates.lng, city.coordinates.lat])
         .setPopup(
           new maplibregl.Popup({ offset: 25 }).setHTML(
-            `<h3>${city.name}</h3><p>${city.country}</p>`
+            `
+              <h3 style="color: red; font-size: 2em; font-weight: bold;">${city.name}</h3>
+              <p style="color: red; font-size: 1.5em; font-weight: bold;">${city.country}</p>
+            `
           )
         )
         .addTo(map);

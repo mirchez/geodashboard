@@ -558,7 +558,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-6 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                className="text-lg px-8 py-6 border-primary-foreground bg-primary-foreground text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
               >
                 Contact Sales
               </Button>

@@ -167,15 +167,6 @@ export default function TrafficDashboard() {
           </div>
         </div>
       </motion.div>
-
-      <Separator />
-
-      <motion.div className="pt-2 sm:pt-4" variants={itemVariants}>
-        <Button className="w-full h-10 sm:h-11" variant="default">
-          <BarChart3 className="h-4 w-4 mr-2" />
-          <span className="text-sm sm:text-base">Generate Report</span>
-        </Button>
-      </motion.div>
     </div>
   );
 
